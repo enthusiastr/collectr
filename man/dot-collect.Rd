@@ -7,11 +7,9 @@
 .collect(item, collection)
 }
 \arguments{
-\item{item}{A \code{collectr.item} object or any R object.}
+\item{item}{A \code{collectr.item} object}
 
 \item{collection}{A \code{collectr} object to which the item is added.}
-
-\item{item_name}{character(1), the deparsed name of the item.}
 }
 \value{
 A modified collectr object with the new item.
