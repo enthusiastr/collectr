@@ -22,7 +22,7 @@ collectr_default_options <-
 
     if (!is.null(family)) {
       if (family %in% collectr_families(TRUE)) {
-        if (family == "ggplot") {
+        if (family == "gg") {
           if (!requireNamespace("ggplot2", quietly = TRUE)) {
             warning("Package 'ggplot2' is required but not installed. Install it before sing collectr with ggplot objects.")
           }
