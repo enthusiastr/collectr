@@ -14,8 +14,8 @@ collectr_default_options <-
   ) {
     options <-
       list(
-        save_path = getwd(),
-        file = NULL,
+        path = getwd(),
+        filename = NULL,
         prefix = "",
         suffix = ""
       )
@@ -34,15 +34,21 @@ collectr_default_options <-
                 width = 1024,
                 height = 768,
                 units = "px",
-                ppi = 72,
+                dpi = 300,
+                scale = 1,
+                bg = NULL,
                 theme = NULL,
-                caption = NULL
+                caption = NULL,
+                create.dir = TRUE
               )
             )
         }
       } else {
         stop(
-          paste0("Unsupported family: '", family, "'.\n See collectr_families(quite=FALSE) to see supported families.")
+          paste0(
+            "Unsupported family: '", family, "'.\n
+            See collectr_families(quite=FALSE) to see supported families."
+          )
         )
       }
     }

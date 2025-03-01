@@ -16,7 +16,8 @@ collect <-
     ...,
     collection = NULL
   ) {
-    item_name <- deparse(substitute(item))
+    args <- list(...)
+    item_name <- ifelse(is.null(args$name), deparse(substitute(item)), args$name)
     if (is.null(collection)) {
       if (!inherits(item, "collectr.item")) {
         structure(
@@ -31,7 +32,6 @@ collect <-
         item
       }
     } else {
-      args <- list(...)
       if (!inherits(item, "collectr.item")) {
         options_to_update <- intersect(names(collection$general_options), names(args))
         specific_options <- args[options_to_update]
@@ -104,13 +104,33 @@ collect <-
       content = item$content,
       specific_options = specific_options
     )
-    return(
-      structure(
-        list(
-          collection = append(current_collection, new_item),
-          general_options = general_options
-        ),
-        class = class(collection)
+    if (is.null(current_collection[[item_name]])) {
+      return(
+        structure(
+          list(
+            collection = append(current_collection, new_item),
+            general_options = general_options
+          ),
+          class = class(collection)
+        )
       )
-    )
+    } else {
+      warning(
+        paste0(
+          "Item ", item_name,
+          " already exists in the collection ", deparse(substitute(collection)),
+          " and will be ovewrwritten.
+          Have you forgotten to set the 'name' when collecting?")
+      )
+      current_collection[[item_name]] <- new_item
+      return(
+        structure(
+          list(
+            collection = current_collection,
+            general_options = general_options
+          ),
+          class = class(collection)
+        )
+      )
+    }
   }
