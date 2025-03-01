@@ -122,7 +122,7 @@ collect <-
           " and will be ovewrwritten.
           Have you forgotten to set the 'name' when collecting?")
       )
-      current_collection[[item_name]] <- new_item
+      current_collection[[item_name]] <- new_item[[item_name]]
       return(
         structure(
           list(
