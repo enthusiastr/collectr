@@ -34,7 +34,7 @@ collectr_default_options <-
                 width = 1024,
                 height = 768,
                 units = "px",
-                dpi = 300,
+                dpi = 144,
                 scale = 1,
                 bg = NULL,
                 theme = NULL,

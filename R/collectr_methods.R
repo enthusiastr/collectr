@@ -12,12 +12,20 @@
 "+.collectr" <- function(a, b) {
   if (inherits(a, "collectr") && inherits(b, "collectr.item")) {
     .collect(b, a)
+  } else if (!inherits(b, "collectr.item")) {
+    stop(
+      paste0(
+        "Failed to collect the item of class '",
+        paste(class(b), collapse = "-"),
+        "' into the collection. Did you forget to wrap it into collect()?"
+      )
+    )
   } else {
     stop(
       paste0(
-        "Failed to add a class '",
+        "Failed to add the object of class '",
         paste(class(b), collapse = "-"),
-        "' to object a class '",
+        "' to the object of class '",
         paste(class(a), collapse = "-"),
         "' object. Unsupported combination of classes.\n")
     )
