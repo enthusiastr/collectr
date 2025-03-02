@@ -7,15 +7,15 @@
 collect(item, ..., collection = NULL)
 }
 \arguments{
-\item{item}{An object to be added. If not a \code{collectr.item}, it will be wrapped as one.}
+\item{item}{a \code{collectr.item} to be added to a \code{collectr} or another R object to be converted into a \code{collectr.item}}
 
 \item{...}{Named options for the new item's specific options.}
 
 \item{collection}{A \code{collectr} object to add the item to. If NULL, a new \code{collectr.item} is created.}
 }
 \value{
-A modified \code{collectr} object with the new item included.
+A new \code{collectr.item} object or a modified \code{collectr} object with the new item included.
 }
 \description{
-Adds an item to a collectr collection, either as a \code{collectr.item} object or a generic R object.
+Either adds a \code{collectr.item} into a \code{collectr} or transforms an object that is not yet a \code{colelctr.item} into one.
 }
