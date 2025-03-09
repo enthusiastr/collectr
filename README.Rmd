@@ -1,23 +1,30 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # `collectr`
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-`collectr` package is designed to simplify the process of collecting
-(gathering and organizing) visual outputs in R projects. It aims to be
-an easy-to-use tool that allows you to collect visuals with consistent,
-predefined properties and later save them into a designated destination.
+`collectr` package is designed to simplify the process of collecting (gathering and organizing) visual outputs in R projects. It aims to be an easy-to-use tool that allows you to collect visuals with consistent, predefined properties and later save them into a designated destination. 
 
-Currently, the `ggplot` objects collections are supported. `flextable`
-collections are coming.
+Currently, the `ggplot` objects collections are supported. `flextable` collections are coming.
 
 ## Installation
 
-You can install the development version of collectr from
-[GitHub](https://github.com/) with:
+You can install the development version of collectr from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
@@ -28,12 +35,11 @@ remotes::install_github("enthusiastr/collectr")
 
 The typical workflow includes three main steps:
 
-1.  Initiate an empty collection. Set the properties that are going to
-    be re-used across all or most of the items.
-2.  Create your visuals and collect them into the collection.
-3.  Save the complete collection.
+1. Initiate an empty collection. Set the properties that are going to be re-used across all or most of the items.
+2. Create your visuals and collect them into the collection.
+3. Save the complete collection. 
 
-``` r
+```{r, eval = FALSE}
 library(colelctr)
 require(ggplot2)
 
@@ -72,3 +78,4 @@ my_plots %++% collect(plot2_iris_boxplots, height = 480, width = 480)
 # When done, save all the plots to the predefined destination, aka shelve them
 shelve(my_plots)
 ```
+

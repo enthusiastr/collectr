@@ -1,0 +1,173 @@
+---
+title: "collectr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{collectr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+collapse = TRUE,
+comment = "#>"
+)
+```
+
+# Installation
+
+```{r installation, include=TRUE, eval=FALSE, echo=TRUE}
+remotes::install_github("enthusiastr/collectr")
+```
+
+# Overview
+  
+`collectr` package is designed to simplify the process of collecting (gathering and organizing) visual outputs in R projects. It aims to be an easy-to-use tool that allows you to collect visuals with consistent, predefined properties and later save them into a designated destination. 
+
+The workflow includes three main steps:
+
+1. Initiate an empty collection. Set the properties that are going to be re-used across all or most of the items.
+2. Create your visuals and collect them into the collection.
+3. Save the complete collection. 
+
+Currently, the `ggplot` objects collections are supported. `flextable` collections are coming.
+
+# Examples 
+
+This and the following examples are using `ggplot2` and `collectr` packages.
+
+```{r}
+library(ggplot2)
+library(collectr)
+```
+
+## A minimalistic example
+
+Let's create and use a small collection of `ggplot`s.
+
+First, we initiate a new empty collection by creating a new `collectr` object of the *family* `gg`:
+
+```{r}
+plots <- collectr("gg")
+```
+
+Next, we need some content to add into the collection. Let's collect two `ggplot`s. Creating the first one:
+
+```{r}
+plot1_iris_scatterplot <- 
+  ggplot(
+    iris,
+    aes(x = Sepal.Length,
+        y = Sepal.Width,
+        color = Species)
+  ) +
+  geom_point()
+```
+
+And storing it into the collection:
+
+```{r}
+plots %++% plot1_iris_scatterplot
+```
+
+Same for the other one:
+
+```{r}
+plot2_iris_boxplot <- 
+  ggplot(
+    iris,
+    aes(x = Species,
+        y = Sepal.Width,
+        color = Species)
+  ) +
+  geom_boxplot()
+
+plots %++% plot2_iris_boxplot
+```
+
+Now, the collection can be saved to a destination or *shelved*:
+
+```{r, include=TRUE, echo=TRUE,eval=FALSE}
+shelve(plots)
+```
+
+The plots are now saved as "plot1_iris_scatterplot.png" and "plot2_iris_boxplot.png" to the current working directory.
+
+## Setting a collection general options
+
+In the previous example, the plots were saved as 1024x768 png files in the current working directory - the default options for a `collectr.gg` collection. To control this, general options of the collection can be set upfront.
+
+To check the default options, see
+
+```{r, eval=FALSE}
+collectr_default_options("gg")
+```
+
+The following options are available:
+
+1. Destination path options:
+  - `path`: full path of the destination folder where the plots will be saved
+  - `filename`: should be kept NULL in the general options, will be overwritten by each specific plot's name or customized filename
+  - `prefix`: character string that will be added into each file name at save between the `path` and `filename`
+  - `suffix`: character string that will be added into each file name at save between the `filename` and .`type`
+
+2. `ggsave()` options:
+  - `type`: sets the `device` to `ggsave()` and the file's extension 
+  - `scale`, `width`, `height`, `units`, `dpi`, `bg` are directly propagated to `ggsave`
+  - `create.dir` logical(1), if TRUE and the folder for saving does not exist, it will be created
+  
+3. Modifiers of the `ggplot`:
+  - `theme`: a `ggplot2::theme()` kind of object, if not NULL, will be applied to all the plots in the collection before saving them
+  - `caption`: recommended to be kept NULL in the general options and set for each plot specific properties if necessary; will be used in `ggplot::ggtitle()` as `label`
+
+The options should be provided in `...` to the `collectr()`:
+
+```{r, eval = FALSE}
+plots <- collectr("gg",
+                  path = "C:/Documents/My_project/Plots",
+                  height = 3,
+                  width = 4,
+                  units = "in",
+                  dpi = 300,
+                  theme = ggplot2::theme_grey())
+```
+
+## Using `collect()` and setting specific options
+
+Any of the general options can be overwritten for a specific item of the collection. To do so, the plot item needs to be added into the collection wrapped into `collect()`:
+
+```{r, eval = FALSE} 
+plots %++% collect(plot1, filename = "plot1_dpi600", dpi = 600)
+plots %++% collect(plot2, height = 4, width = 9, filename = "plot2_wide")
+```
+
+## Collecting in a loop 
+
+By default, the name of an item in the collection as well as its specific value of `filename` are deparsed from the object name when it is added to the collection. If the same object is added to the collection multiple times with the same name, only the latest instance will be saved.
+
+In many cases, thus, it is necessary to overwrite the default value by providing specific values for `name` and `filename`. For example, when adding plots in a loop:
+
+```{r, eval = FALSE}
+example_df <- data.frame(
+  x = runif(100),
+  y = runif(100),
+  gr = LETTERS[ceiling(runif(100, 0, 5))]
+)
+
+plots <- collectr("gg", prefix = "plot_")
+
+for (gr in unique(example_df$gr)) {
+  plot_gr <- ggplot(
+    example_df,
+    aes(
+      x = x,
+      y = y
+    )
+  ) +
+  geom_point()
+  
+  plots %++% collect(plot_gr, name = gr, filename = gr)
+}
+
+shelve(plots)
+```
