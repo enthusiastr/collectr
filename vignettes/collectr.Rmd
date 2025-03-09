@@ -24,7 +24,7 @@ remotes::install_github("enthusiastr/collectr")
   
 `collectr` package is designed to simplify the process of collecting (gathering and organizing) visual outputs in R projects. It aims to be an easy-to-use tool that allows you to collect visuals with consistent, predefined properties and later save them into a designated destination. 
 
-The workflow is include three main steps:
+The workflow includes three main steps:
 
 1. Initiate an empty collection. Set the properties that are going to be re-used across all or most of the items.
 2. Create your visuals and collect them into the collection.

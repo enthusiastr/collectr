@@ -1,11 +1,10 @@
 Package: collectr
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Quick Tool for Saving Visuals in a Unified Manner
+Version: 0.1
 Authors@R: 
     person("Vladimir", "Pyrlik", , "vpyrlik.gh@gmail.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: colelctr simplifies the process of gathering and organizing visual outputs in R projects. It aims to be an easy-to-use tool that allows you to collect visuals with consistent, predefined properties and later save them into a designated destination. 
+License: `use_gpl3_license()`
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
