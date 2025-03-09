@@ -122,7 +122,7 @@ The following options are available:
 
 The options should be provided in `...` to the `collectr()`:
 
-```{r}
+```{r, eval = FALSE}
 plots <- collectr("gg",
                   path = "C:/Documents/My_project/Plots",
                   height = 3,
@@ -132,3 +132,42 @@ plots <- collectr("gg",
                   theme = ggplot2::theme_grey())
 ```
 
+## Using `collect()` and setting specific options
+
+Any of the general options can be overwritten for a specific item of the collection. To do so, the plot item needs to be added into the collection wrapped into `collect()`:
+
+```{r, eval = FALSE} 
+plots %++% collect(plot1, filename = "plot1_dpi600", dpi = 600)
+plots %++% collect(plot2, height = 4, width = 9, filename = "plot2_wide")
+```
+
+## Collecting in a loop 
+
+By default, the name of an item in the collection as well as its specific value of `filename` are deparsed from the object name when it is added to the collection. If the same object is added to the collection multiple times with the same name, only the latest instance will be saved.
+
+In many cases, thus, it is necessary to overwrite the default value by providing specific values for `name` and `filename`. For example, when adding plots in a loop:
+
+```{r, eval = FALSE}
+example_df <- data.frame(
+  x = runif(100),
+  y = runif(100),
+  gr = LETTERS[ceiling(runif(100, 0, 5))]
+)
+
+plots <- collectr("gg", prefix = "plot_")
+
+for (gr in unique(example_df$gr)) {
+  plot_gr <- ggplot(
+    example_df,
+    aes(
+      x = x,
+      y = y
+    )
+  ) +
+  geom_point()
+  
+  plots %++% collect(plot_gr, name = gr, filename = gr)
+}
+
+shelve(plots)
+```
